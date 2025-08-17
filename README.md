@@ -1,4 +1,4 @@
-🍿 Movie Chatbot
+
 🍿 Movie Chatbot is an intelligent Python-Flask application that serves as your personal cinematic assistant. It uses a trained machine learning model to understand your queries and fetch movie details and genre-based recommendations from the OMDb API. Discover your next favorite film in a chat-based experience!
 
 ✨ Features
