@@ -95,7 +95,7 @@ Open a Pull Request
 
 
 📧 Contact
-Your Name - Aravindbtc2005@gmail.com.com
+- Aravindbtc2005@gmail.com.com
 
 Project Link:  https://github.com/aravindbtc/-Movie-Chatbot.git
 
