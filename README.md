@@ -19,10 +19,6 @@ Python 3.x
 pip (Python package installer)
 
 Installation
-Clone the repository:
-
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
 
 Install the required libraries:
 
