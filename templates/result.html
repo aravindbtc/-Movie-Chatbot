@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot - Response</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="response-container">
+        <h1>Chatbot Response</h1>
+        <div class="chat-response">
+            <p><strong>User:</strong> {{ user_input }}</p>
+            <p><strong>Bot:</strong> {{ response }}</p>
+        </div>
+        <a href="/" class="back-button">⬅ Back to Chat</a>
+    </div>
+</body>
+</html>

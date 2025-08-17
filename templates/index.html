@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot & Movie Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>AI Chatbot & Movie Search</h1>
+
+    <!-- Chat Section -->
+    <div class="chat-container">
+        <h2>Chat</h2>
+        <div id="chat-box"></div>
+        <form id="chat-form">
+            <input type="text" id="user-input" placeholder="Ask something..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <!-- Movie Search Section -->
+    <div class="movie-search-container">
+        <h2>Movie Search</h2>
+        <input type="text" id="movie-search" placeholder="Enter movie name..." required>
+        <button id="search-movie-btn">Search</button>
+
+        <div id="movie-details" class="movie-info">
+            <h3 id="movieTitle"></h3>
+            <p><strong>Year:</strong> <span id="movieYear"></span></p>
+            <p><strong>Plot:</strong> <span id="moviePlot"></span></p>
+            <p><strong>Genre:</strong> <span id="movieGenre"></span></p>
+            <p><strong>Director:</strong> <span id="movieDirector"></span></p>
+            <p><strong>Actors:</strong> <span id="movieActors"></span></p>
+            <p><strong>IMDb Rating:</strong> <span id="movieRating"></span></p>
+            <img id="moviePoster" src="" alt="Movie Poster">
+        </div>
+    </div>
+
+    <script>
+        // Chatbot Functionality
+        document.getElementById("chat-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const userMessage = document.getElementById("user-input").value;
+            fetch("/chat", {
+                method: "POST",
+                body: new URLSearchParams({ message: userMessage }),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("chat-box").innerHTML += `<p><strong>User:</strong> ${userMessage}</p>`;
+                document.getElementById("chat-box").innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
+
+                // Check if the response includes audio to play
+                if (data.response.includes("<audio")) {
+                    // Create an audio element and append it to the page
+                    const audioElement = new Audio('/audio/movie_not_found.mp3');
+                    audioElement.play();
+                }
+            });
+        });
+
+        // Movie Search Functionality
+        document.getElementById("search-movie-btn").addEventListener("click", function() {
+            const movieQuery = document.getElementById("movie-search").value;
+            fetch("/search_movie", {
+                method: "POST",
+                body: new URLSearchParams({ movie_name: movieQuery }),
+                headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            })
+            .then(response => response.json())
+            .then(movie => {
+                if (movie.error) {
+                    document.getElementById("movie-details").innerHTML = `<p>Movie not found.</p>`;
+                    // Add the audio player directly to the movie details section
+                    document.getElementById("movie-details").innerHTML += `
+                        <audio autoplay>
+                            <source src="/audio/movie_not_found.mp3" type="audio/mpeg">
+                        </audio>
+                    `;
+                } else {
+                    document.getElementById("movieTitle").innerText = `${movie.Title} (${movie.Year})`;
+                    document.getElementById("movieYear").innerText = movie.Year;
+                    document.getElementById("moviePlot").innerText = movie.Plot;
+                    document.getElementById("movieGenre").innerText = movie.Genre;
+                    document.getElementById("movieDirector").innerText = movie.Director;
+                    document.getElementById("movieActors").innerText = movie.Actors;
+                    document.getElementById("movieRating").innerText = movie.imdbRating;
+                    document.getElementById("moviePoster").src = movie.Poster;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
